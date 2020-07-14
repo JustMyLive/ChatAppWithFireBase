@@ -14,7 +14,6 @@ class _AddressListState extends State<AddressList> {
         height: 50,
         ),
       ),
-      body: ,
     );
   }
 }

@@ -4,14 +4,10 @@ import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
-import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:flutter/material.dart';
 
 import '../services/auth.dart';
-import '../services/auth.dart';
 import '../widgets/widget.dart';
-import 'signIn.dart';
-import 'signUp.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -103,14 +99,6 @@ class _ChatRoomState extends State<ChatRoom> {
         ],
       ),
       body: chatRoomList(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => SearchScreen()
-          ));
-        },
-      ),
     );
   }
 }
