@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class AddressList extends StatefulWidget {
   @override
@@ -14,7 +16,28 @@ class _AddressListState extends State<AddressList> {
         height: 50,
         ),
       ),
-      body: ,
+      body: ListView.builder(
+        itemCount: 100,
+        itemExtent: 50,
+        itemBuilder: (BuildContext context,int index){
+          return Container(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(''),
+              ),
+              title: Text(
+                'User',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )
+            ),
+          );
+        },
+      ),
     );
   }
 }
+
+
+
