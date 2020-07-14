@@ -1,5 +1,6 @@
 import 'package:ChatAppWithFireBase/helper/authenticate.dart';
 import 'package:ChatAppWithFireBase/views/chatRoom.dart';
+import 'package:ChatAppWithFireBase/views/tabbars.dart';
 import 'package:flutter/material.dart';
 
 import 'helper/helperfunctions.dart';
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Color(0xff1F1F1F),
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn != null ? userIsLoggedIn ? ChatRoom() : Authenticate() : Authenticate()
+      home: userIsLoggedIn != null ? userIsLoggedIn ? TabBars() : Authenticate() : Authenticate()
     );
   }
 }
