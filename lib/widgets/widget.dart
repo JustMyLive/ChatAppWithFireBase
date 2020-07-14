@@ -22,6 +22,20 @@ InputDecoration textFiledInputDecoration(String hintText) {
   );
 }
 
+TextStyle tabBarSelectedTextStyle() {
+  return TextStyle(
+    color: Colors.white,
+    fontSize: 13,
+  );
+}
+
+TextStyle tabBarUnSelectedTextStyle() {
+  return TextStyle(
+    color: Colors.white70,
+    fontSize: 13,
+  );
+}
+
 TextStyle simpleTextStyle() {
   return TextStyle(
     color: Colors.white,
@@ -56,5 +70,17 @@ Decoration defaultBoxDecoration() {
             const Color(0xff2A75BC),
           ]
       )
+  );
+}
+
+Widget myCustomBottomAppTab(int index, int selectedIndex, String text, String icon) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Icon(icon == "chat" ? Icons.chat : Icons.person,
+        color: selectedIndex == index ? Colors.white : Colors.white70,),
+      Text(text,
+        style: selectedIndex == index ?tabBarSelectedTextStyle() : tabBarUnSelectedTextStyle(),),
+    ],
   );
 }
