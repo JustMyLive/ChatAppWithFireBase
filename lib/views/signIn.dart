@@ -1,4 +1,5 @@
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,9 +41,7 @@ class _SignInState extends State<SignIn> {
           HelperFunctions.saveUserNameSharePreference(userInfoSnapshot.documents[0].data["name"]);
           HelperFunctions.saveUserEmailSharePreference(userInfoSnapshot.documents[0].data["email"]);
 
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => ChatRoom()
-          ));
+          replace(context, ChatRoom());
         } else {
           setState(() {
             isLoading = false;

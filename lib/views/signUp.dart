@@ -1,4 +1,5 @@
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:ChatAppWithFireBase/services/auth.dart';
@@ -46,9 +47,7 @@ class _SignUpState extends State<SignUp> {
         HelperFunctions.saveUserNameSharePreference(userNameTextEditingController.text);
         HelperFunctions.saveUserEmailSharePreference(emailTextEditingController.text);
 
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ChatRoom()
-        ));
+        replace(context, ChatRoom());
       });
     }
   }

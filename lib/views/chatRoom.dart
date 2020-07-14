@@ -1,6 +1,7 @@
 import 'package:ChatAppWithFireBase/helper/authenticate.dart';
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
@@ -75,9 +76,7 @@ class _ChatRoomState extends State<ChatRoom> {
         actions: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => CreateChatGroup()
-              ));
+              push(context, CreateChatGroup());
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -87,9 +86,7 @@ class _ChatRoomState extends State<ChatRoom> {
           GestureDetector(
             onTap: () {
               authMethods.signOut();
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => Authenticate()
-              ));
+              replace(context, Authenticate());
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -116,13 +113,11 @@ class ChatRoomListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(
+        push(context, ConversationScreen(
             chatRoomId,
             chatRoomName,
             chatType: this.chatType == "groupType" ? ChatType.groupChatType : ChatType.privateChatType,
-          )
-        ));
+          ));
       },
       child: Container(
         color: Colors.black26,
