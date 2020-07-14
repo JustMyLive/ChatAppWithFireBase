@@ -28,7 +28,7 @@ class _AddressListState extends State<AddressList> {
               title: Text(
                 'User',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               )
             ),
