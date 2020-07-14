@@ -1,5 +1,6 @@
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -119,10 +120,8 @@ class _CreateChatGroupState extends State<CreateChatGroup> {
                   return;
                 }
 
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => ConversationScreen(
-                      chatRoomId, "GroupNameForInit", chatType: ChatType.groupChatType,)
-                ));
+                replace(context, ConversationScreen(
+                      chatRoomId, "GroupNameForInit", chatType: ChatType.groupChatType,));
               },
               child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),

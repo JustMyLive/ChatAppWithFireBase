@@ -1,4 +1,5 @@
 import 'package:ChatAppWithFireBase/helper/constants.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -88,10 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
         print("Create Room failed, Please check up");
         return;
       }
-
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(chatRoomId, userName)
-      ));
+      push(context, ConversationScreen(chatRoomId, userName));
     } else {
       print("you can send message yourself");
     }

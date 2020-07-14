@@ -1,3 +1,4 @@
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/views/addressList.dart';
 import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:ChatAppWithFireBase/widgets/myCustomBottomAppBarItems.dart';
@@ -35,9 +36,7 @@ class _TabBarsState extends State<TabBars> {
         backgroundColor: Color.fromRGBO(52, 101, 165, 1),
         child: Icon(Icons.search),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => SearchScreen()
-          ));
+          push(context, SearchScreen());
         },
       ),
       bottomNavigationBar: BottomAppBar(
