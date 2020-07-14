@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 Widget appBarMain(BuildContext context) {
@@ -57,4 +59,36 @@ Decoration defaultBoxDecoration() {
           ]
       )
   );
+}
+
+class aaaa {
+
+  testFunction() {
+
+    var listW = <Widget>[];
+
+    for(int i=0; i<100; i++) {
+      listW.add(Container());
+    }
+
+    ListView(
+      children: <Widget>[
+        Container(),
+        Container(),
+        Container(),
+        Container(),
+        Container(),
+        Container(),
+      ],
+    );
+
+    ListView.builder(
+      itemCount: 100,
+        itemBuilder: (context)
+    );
+
+
+  }
+
+
 }

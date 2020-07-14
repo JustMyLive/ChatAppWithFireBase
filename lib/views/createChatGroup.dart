@@ -25,30 +25,32 @@ class _CreateChatGroupState extends State<CreateChatGroup> {
     return StreamBuilder(
       stream: userStream,
       builder: (context, snapshot) {
-        documentList = [];
-        snapshot.data?.documents?.forEach((element) {
-          documentList.add({
-            "isSelected": false,
-            "data": element,
+        if (documentList.isEmpty) {
+          snapshot.data?.documents?.forEach((element) {
+            documentList.add({
+              "isSelected": false,
+              "data": element,
+            });
           });
-        });
-        documentList.removeWhere((element) {
-          if (element["data"].data["name"] == Constants.myName)
-            return true;
-          else
-            return false;
-        });
+          documentList.removeWhere((element) {
+            if (element["data"].data["name"] == Constants.myName)
+              return true;
+            else
+              return false;
+          });
+        }
 
         return documentList.isNotEmpty ? ListView.builder(
             itemCount: documentList.length,
             itemBuilder: (context, index) {
               return UserItem(
                   documentList[index]["data"].data["name"].toString(),
+                  documentList[index]["isSelected"],
                   onTap: (isSelected, userName) {
                     setState(() {
                       for(int i = 0; i < documentList.length; i++) {
-                        if (userName == documentList[index]["data"].data["name"].toString()) {
-                          documentList[index]["isSelected"] = isSelected;
+                        if (userName == documentList[i]["data"].data["name"].toString()) {
+                          documentList[i]["isSelected"] = isSelected;
                           return;
                         }
                       }
@@ -159,30 +161,23 @@ class _CreateChatGroupState extends State<CreateChatGroup> {
   }
 }
 
-class UserItem extends StatefulWidget {
+class UserItem extends StatelessWidget {
   final String userName;
   final Function(bool, String) onTap;
+  final bool isSelected;
 
-  UserItem(this.userName, {this.onTap});
+  UserItem(this.userName, this.isSelected, {this.onTap});
 
-  @override
-  _UserItemState createState() => _UserItemState();
-}
 
-class _UserItemState extends State<UserItem> {
-  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-          if (widget.onTap != null) {
-            widget.onTap(isSelected, widget.userName);
-          }
-        });
+        if (onTap != null) {
+          onTap(!isSelected, userName);
+        }
       },
       child: Container(
         color: Colors.black26,
@@ -197,11 +192,11 @@ class _UserItemState extends State<UserItem> {
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(40),
               ),
-              child: Text("${widget.userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
+              child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
             ),
             SizedBox(width: 8,),
             Expanded(
-                child: Text(widget.userName, style: medimTextStyle(),)),
+                child: Text(userName, style: medimTextStyle(),)),
             Icon(
               isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
               color: Colors.white,),
