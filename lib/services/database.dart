@@ -50,6 +50,24 @@ class DataBaseMethods {
     return document.documentID;
   }
 
+  addUserToGroupChatRoom(users, String chatRoomDocumentId) async {
+
+    Map<String, dynamic> chatRoomMap = {
+      "users": users,
+    };
+
+    await Firestore.instance.collection("ChatRoom")
+        .document(chatRoomDocumentId)
+        .setData(chatRoomMap, merge: true)
+        .whenComplete(() {
+          return true;
+        })
+        .catchError((e) {
+          print(e.toString());
+          return false;
+        });
+  }
+
   addConversationMessags(String chatRoomId, messageMap) {
     Firestore.instance.collection("ChatRoom")
         .document(chatRoomId)
@@ -58,6 +76,15 @@ class DataBaseMethods {
        print(e.toString());
     });
   }
+
+//  addShareMessags(String chatRoomId, messageMap) {
+//    Firestore.instance.collection("ChatRoom")
+//        .document(chatRoomId)
+//        .collection("chatMessages")
+//        .add(messageMap).catchError((e) {
+//      print(e.toString());
+//    });
+//  }
 
   getConversationMessags(String chatRoomId) async {
     return await Firestore.instance.collection("ChatRoom")
@@ -137,4 +164,6 @@ class DataBaseMethods {
       return false;
     });
   }
+
+
 }
