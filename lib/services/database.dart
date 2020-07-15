@@ -50,6 +50,24 @@ class DataBaseMethods {
     return document.documentID;
   }
 
+  addUserToGroupChatRoom(users, String chatRoomDocumentId) async {
+
+    Map<String, dynamic> chatRoomMap = {
+      "users": users,
+    };
+
+    await Firestore.instance.collection("ChatRoom")
+        .document(chatRoomDocumentId)
+        .setData(chatRoomMap, merge: true)
+        .whenComplete(() {
+          return true;
+        })
+        .catchError((e) {
+          print(e.toString());
+          return false;
+        });
+  }
+
   addConversationMessags(String chatRoomId, messageMap) {
     Firestore.instance.collection("ChatRoom")
         .document(chatRoomId)
@@ -58,6 +76,15 @@ class DataBaseMethods {
        print(e.toString());
     });
   }
+
+//  addShareMessags(String chatRoomId, messageMap) {
+//    Firestore.instance.collection("ChatRoom")
+//        .document(chatRoomId)
+//        .collection("chatMessages")
+//        .add(messageMap).catchError((e) {
+//      print(e.toString());
+//    });
+//  }
 
   getConversationMessags(String chatRoomId) async {
     return await Firestore.instance.collection("ChatRoom")
@@ -79,4 +106,64 @@ class DataBaseMethods {
         .collection("users")
         .snapshots();
   }
+
+  getFriendList(String userDocumentId) async {
+    return await Firestore.instance
+        .collection("users")
+        .document(userDocumentId)
+        .collection("friendList")
+        .where("isApproved", isEqualTo: true)
+        .where("isDeleted", isEqualTo: false)
+        .snapshots();
+  }
+
+  getUnApproveFriendList(String userDocumentId) async {
+    return await Firestore.instance
+        .collection("users")
+        .document(userDocumentId)
+        .collection("friendList")
+        .where("isApproved", isEqualTo: null)
+        .where("isDeleted", isEqualTo: null)
+        .snapshots();
+  }
+
+  launchFriend(String userDocumentId, String friendUserName) async {
+    Map<String, dynamic> friendListMap = {
+      "userName": friendUserName,
+    };
+
+    await Firestore.instance
+        .collection("users")
+        .document(userDocumentId)
+        .collection("friendList")
+        .document(friendUserName)
+        .setData(friendListMap, merge: true)
+        .whenComplete(() => () {
+      return true;
+    }).catchError((e) {
+      return false;
+    });
+  }
+
+  setFriendApprove(String userDocumentId, String friendUserName, bool isApproved) async {
+    Map<String, dynamic> friendListMap = {
+      "userName": friendUserName,
+      "isApproved": isApproved,
+      "isDeleted": false,
+    };
+
+    await Firestore.instance
+        .collection("users")
+        .document(userDocumentId)
+        .collection("friendList")
+        .document(friendUserName)
+        .setData(friendListMap, merge: true)
+        .whenComplete(() => () {
+      return true;
+    }).catchError((e) {
+      return false;
+    });
+  }
+
+
 }
