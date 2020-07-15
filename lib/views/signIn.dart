@@ -2,6 +2,7 @@ import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/views/tabbars.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
@@ -40,8 +41,9 @@ class _SignInState extends State<SignIn> {
           HelperFunctions.saveUserLoggedInSharePreference(true);
           HelperFunctions.saveUserNameSharePreference(userInfoSnapshot.documents[0].data["name"]);
           HelperFunctions.saveUserEmailSharePreference(userInfoSnapshot.documents[0].data["email"]);
+          HelperFunctions.saveUserDocumentIdSharePreference(userInfoSnapshot.documents[0].documentID);
 
-          replace(context, ChatRoom());
+          replace(context, TabBars());
         } else {
           setState(() {
             isLoading = false;

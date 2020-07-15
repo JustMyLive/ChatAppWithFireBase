@@ -2,9 +2,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperFunctions {
   
-  static String sharePreferenceUserLoggedInKey = "ISLOGGEDIN";
-  static String sharePreferenceUserNameInKey = "USERNAMEKEY";
-  static String sharePreferenceUserEmailInKey = "USEREMAILKEY";
+  static const String sharePreferenceUserLoggedInKey = "ISLOGGEDIN";
+  static const String sharePreferenceUserNameInKey = "USERNAMEKEY";
+  static const String sharePreferenceUserEmailInKey = "USEREMAILKEY";
+  static const String sharePreferenceUserDocumentInKey = "USERDOCUMENTKEY";
   
   // Saving data to SharedPreference
 
@@ -16,6 +17,11 @@ class HelperFunctions {
   static Future<void> saveUserNameSharePreference(String userName) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.setString(sharePreferenceUserNameInKey, userName);
+  }
+
+  static Future<void> saveUserDocumentIdSharePreference(String userName) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.setString(sharePreferenceUserDocumentInKey, userName);
   }
 
   static Future<void> saveUserEmailSharePreference(String userEmail) async {
@@ -38,6 +44,11 @@ class HelperFunctions {
   static Future<String> getUserEmailSharePreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getString(sharePreferenceUserEmailInKey);
+  }
+
+  static Future<String> getUserDocumentSharePreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.getString(sharePreferenceUserDocumentInKey);
   }
 
 }

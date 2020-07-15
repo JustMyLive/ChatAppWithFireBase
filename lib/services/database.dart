@@ -18,11 +18,14 @@ class DataBaseMethods {
         .getDocuments();
   }
 
-  uploadUserInfo(userMap) {
-    Firestore.instance.collection("users")
-        .add(userMap).catchError((e) {
-          print(e.toString());
+  uploadUserInfo(userMap) async {
+    var document = await Firestore.instance.collection("users").document();
+
+    await document.setData(userMap).catchError((e) {
+      print(e.toString());
     });
+
+    return document.documentID;
   }
 
   createPrivateChatRoom(String chatroomId, chatRoomMap) async {
@@ -56,16 +59,18 @@ class DataBaseMethods {
       "users": users,
     };
 
+    bool isSuccessed;
     await Firestore.instance.collection("ChatRoom")
         .document(chatRoomDocumentId)
         .setData(chatRoomMap, merge: true)
         .whenComplete(() {
-          return true;
+          isSuccessed = true;
         })
         .catchError((e) {
           print(e.toString());
-          return false;
+          isSuccessed = false;
         });
+    return isSuccessed;
   }
 
   addConversationMessags(String chatRoomId, messageMap) {
@@ -132,6 +137,7 @@ class DataBaseMethods {
       "userName": friendUserName,
     };
 
+    bool isSuccessed;
     await Firestore.instance
         .collection("users")
         .document(userDocumentId)
@@ -139,10 +145,12 @@ class DataBaseMethods {
         .document(friendUserName)
         .setData(friendListMap, merge: true)
         .whenComplete(() => () {
-      return true;
+      isSuccessed = true;
     }).catchError((e) {
-      return false;
+      isSuccessed = false;
     });
+
+    return isSuccessed;
   }
 
   setFriendApprove(String userDocumentId, String friendUserName, bool isApproved) async {
@@ -152,6 +160,7 @@ class DataBaseMethods {
       "isDeleted": false,
     };
 
+    bool isSuccessed;
     await Firestore.instance
         .collection("users")
         .document(userDocumentId)
@@ -159,10 +168,12 @@ class DataBaseMethods {
         .document(friendUserName)
         .setData(friendListMap, merge: true)
         .whenComplete(() => () {
-      return true;
+      isSuccessed = true;
     }).catchError((e) {
-      return false;
+      isSuccessed = false;
     });
+
+    return isSuccessed;
   }
 
 
