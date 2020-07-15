@@ -1,6 +1,7 @@
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/views/tabbars.dart';
 import 'package:flutter/material.dart';
 import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
@@ -38,16 +39,17 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
 
-      authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val) {
+      authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val) async {
         //print("${val.uid}");
 
-        dataBaseMethods.uploadUserInfo(userInfoMap);
+        var documentID = await dataBaseMethods.uploadUserInfo(userInfoMap);
 
         HelperFunctions.saveUserLoggedInSharePreference(true);
         HelperFunctions.saveUserNameSharePreference(userNameTextEditingController.text);
         HelperFunctions.saveUserEmailSharePreference(emailTextEditingController.text);
+        HelperFunctions.saveUserDocumentIdSharePreference(documentID);
 
-        replace(context, ChatRoom());
+        replace(context, TabBars());
       });
     }
   }
