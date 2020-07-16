@@ -80,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
       Map<String, dynamic> chatRoomMap = {
         "users": users,
         "chatroomId": chatRoomId,
-        "chatroomType": "groupType",
+        "chatroomType": "privateType",
       };
 
       await DataBaseMethods().createPrivateChatRoom(chatRoomId, chatRoomMap);
