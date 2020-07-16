@@ -5,6 +5,7 @@ import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/addFriends.dart';
 import 'package:ChatAppWithFireBase/views/notifications.dart';
+import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,8 @@ class _AddressListState extends State<AddressList> {
   DataBaseMethods dataBaseMethods = new DataBaseMethods();
 
   Stream friendListStream;
+
+  Stream needApproveListStream;
 
   Widget friendList() {
     return StreamBuilder(
@@ -41,10 +44,6 @@ class _AddressListState extends State<AddressList> {
   }
 
   getUserInfo() async {
-    var aaa = dataBaseMethods.fireBaseTest();
-
-    print("dataBaseMethods.fireBaseTest(): ${aaa}");
-
     Constants.myName = await HelperFunctions.getUserNameSharePreference();
     Constants.myDocument = await HelperFunctions.getUserDocumentSharePreference();
 
@@ -55,6 +54,10 @@ class _AddressListState extends State<AddressList> {
         friendListStream = val;
       });
     });
+
+    dataBaseMethods.getNeedApproveFriendList(Constants.myDocument).then((val) {
+      needApproveListStream = val;
+    });
   }
 
   @override
@@ -62,30 +65,31 @@ class _AddressListState extends State<AddressList> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          Row(
-            children: <Widget>[
-              Badge(
+          StreamBuilder(
+            stream: needApproveListStream,
+            builder: (context, snapshot) {
+              return Badge(
                 badgeColor: Colors.amberAccent,
                 shape: BadgeShape.circle,
                 borderRadius: 20,
                 position: BadgePosition.topRight(right: 8, top: 10),
                 toAnimate: false,
-                showBadge: true,
+                showBadge: snapshot.hasData && snapshot.data.documents.length > 0,
                 badgeContent: Container(),
                 child: IconButton(
                   icon: Icon(Icons.notifications),
                   onPressed: () {
-                    push(context, Notifications());
+                    push(context, Notifications(snapshot.data.documents, Constants.myDocument, Constants.myName));
                   },
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () {
-                  push(context, AddFriends());
-                },
-              ),
-            ],
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              push(context, AddFriends(userName: Constants.myName, userDocumentId: Constants.myDocument));
+            },
           ),
         ],
         title: Text(
@@ -132,15 +136,17 @@ class ListViewItem extends StatelessWidget {
           Container(
             height: 40,
             width: 40,
+            alignment: Alignment.center ,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.blueAccent,
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(40),
             ),
+            child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
           ),
           SizedBox(width: 7,),
           Text(userName, style: TextStyle(
-            color: Colors.black54,
-            fontSize: 14,
+            color: Colors.black,
+            fontSize: 16,
           ),),
         ],
       ),

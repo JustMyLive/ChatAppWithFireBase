@@ -1,13 +1,48 @@
+import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatefulWidget {
+  final String userDocumentId;
+  final String userName;
+  List<dynamic> needApproveList;
+
+  Notifications(this.needApproveList, this.userDocumentId, this.userName);
+
   @override
   _NotificationsState createState() => _NotificationsState();
 }
 
 class _NotificationsState extends State<Notifications> {
 
-  int count_Test = 5;
+  DataBaseMethods dataBaseMethods = new DataBaseMethods();
+  Stream needApproveListStream;
+
+  bool isLoading = false;
+
+  setFriendApprove(bool isApproved, String friendUserName, String otherDocumentId) async {
+    setState(() {
+      isLoading = true;
+    });
+    if (await dataBaseMethods.setFriendApprove(
+        widget.userDocumentId, otherDocumentId, widget.userName, friendUserName, isApproved)) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  getUserInfo() async {
+    dataBaseMethods.getNeedApproveFriendList(widget.userDocumentId).then((val) {
+      needApproveListStream = val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +55,40 @@ class _NotificationsState extends State<Notifications> {
           ),
         ),
       ),
-      body: ListView.builder(
-          itemCount: count_Test,
-          itemBuilder: (context,index) {
-            return Requests(userName: 'aaa',);
-          },
-      )
+      body:  Stack(
+        children: <Widget>[
+          StreamBuilder(
+            stream: needApproveListStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData)
+                widget.needApproveList = snapshot.data.documents;
+              return ListView.builder(
+                itemCount: widget.needApproveList.length,
+                itemBuilder: (context,index) {
+                  return RequestsItem(
+                    userName: widget.needApproveList[index].data["userName"],
+                    documentId: widget.needApproveList[index].data["documentId"],
+                    onTap: (isApproved, itemDocumentId, name) {
+                      setFriendApprove(isApproved, name, itemDocumentId);
+                    },);
+                },
+              );
+            },
+          ),
+          isLoading ? loadingContainer() : Container(),
+        ],
+      ),
     );
   }
 }
 
-class Requests extends StatelessWidget {
+class RequestsItem extends StatelessWidget {
 
   final String userName;
+  final String documentId;
+  final Function(bool, String, String) onTap;
 
-  Requests ({@required this.userName});
+  RequestsItem({@required this.userName, @required this.documentId, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +102,16 @@ class Requests extends StatelessWidget {
                 Container(
                   height: 40,
                   width: 40,
+                  alignment: Alignment.center ,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blueAccent,
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(40),
                   ),
+                  child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
                 ),
                 SizedBox(width: 7,),
                 Text(userName, style: TextStyle(
-                  color: Colors.black54,
+                  color: Colors.black,
                   fontSize: 16,
                 ),),
               ],
@@ -65,7 +121,8 @@ class Requests extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.highlight_off),
                 onPressed: (){
-                  print ('refuse');
+                  if (this.onTap != null)
+                    onTap(false, this.documentId, this.userName);
                 },
               ),
             ),
@@ -74,7 +131,8 @@ class Requests extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.person_add),
                 onPressed: (){
-                  print ('recive');
+                  if (this.onTap != null)
+                    onTap(true, this.documentId, this.userName);
                 },
               ),
             ),

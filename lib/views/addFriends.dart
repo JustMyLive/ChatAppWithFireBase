@@ -1,14 +1,74 @@
 import 'package:ChatAppWithFireBase/helper/util.dart';
+import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AddFriends extends StatefulWidget {
+  final String userName;
+  final String userDocumentId;
+
+  AddFriends({@required this.userName, @required this.userDocumentId});
+
   @override
   _AddFriendsState createState() => _AddFriendsState();
 }
 
 class _AddFriendsState extends State<AddFriends> {
 
-  int count_Test = 0;
+  TextEditingController searchTextEditingController = new TextEditingController();
+  DataBaseMethods dataBaseMethods = new DataBaseMethods();
+
+  QuerySnapshot searchSnapshot;
+  bool isLoading = false;
+  String otherDocumentId;
+
+  initiateSearch(){
+    setState(() {
+      isLoading = true;
+    });
+    dataBaseMethods.getUserByUsername(searchTextEditingController.text).then((val) {
+      setState(() {
+        isLoading = false;
+        searchSnapshot = val;
+      });
+    });
+  }
+
+  addFriendUser(String userName) async {
+    if (widget.userName != userName) {
+      setState(() {
+        isLoading = true;
+      });
+      bool isSucceed = await dataBaseMethods.launchFriend(
+          widget.userDocumentId,
+          otherDocumentId,
+          widget.userName,
+          userName);
+      if (isSucceed) {
+         Navigator.pop(context);
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Widget searchList() {
+    return searchSnapshot != null ? ListView.builder(
+        itemCount: searchSnapshot.documents.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return RequestListItem(
+            userName: searchSnapshot.documents[index].data["name"],
+            onTap: (val) {
+              otherDocumentId = searchSnapshot.documents[index].documentID;
+              addFriendUser(val);
+            },
+          );
+        }) : Container();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,48 +81,46 @@ class _AddFriendsState extends State<AddFriends> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          Stack(
+          Column(
             children: <Widget>[
-              Container(
-                child: TextField(
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
+              Stack(
+                children: <Widget>[
+                  Container(
+                    child: TextField(
+                      controller: searchTextEditingController,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                      decoration: InputDecoration(
+                          labelText: 'Search',
+                          hintText: 'email',
+                          prefixIcon: Icon(Icons.person)
+                      ),
+                    ),
                   ),
-                  decoration: InputDecoration(
-                      labelText: 'Search',
-                      hintText: 'email',
-                      prefixIcon: Icon(Icons.person)
-                  ),
-                ),
+                  Positioned(
+                    right: 10,
+                    top: 5,
+                    child: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        initiateSearch();
+                      },
+                    ),
+                  )
+                ],
               ),
-              Positioned(
-                right: 10,
-                top: 5,
-                child: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      count_Test = 5;
-                    });
-//                    push(context, widget);
-                  },
-                ),
-              )
+              SizedBox(height: 5,),
+              Expanded(
+                child: searchList()
+              ),
             ],
           ),
-          SizedBox(height: 5,),
-          Expanded(
-            child: ListView.builder(
-              itemCount: count_Test,
-              itemBuilder: (context, index) {
-                return RequestListItem(userName: "aaaa");
-              },
-            ),
-          ),
+          isLoading ? loadingContainer() : Container(),
         ],
       ),
     );
@@ -73,8 +131,9 @@ class _AddFriendsState extends State<AddFriends> {
 class RequestListItem extends StatelessWidget {
 
   final String userName;
+  final Function(String) onTap;
 
-  RequestListItem({@required this.userName});
+  RequestListItem({@required this.userName, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +147,12 @@ class RequestListItem extends StatelessWidget {
               Container(
                 height: 40,
                 width: 40,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.blueAccent,
                 ),
+                child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
               ),
               SizedBox(width: 7,),
               Text(userName, style: TextStyle(
@@ -105,7 +166,9 @@ class RequestListItem extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.add_circle),
               onPressed: (){
-                print ('ok');
+                if (this.onTap != null) {
+                  this.onTap(userName);
+                }
               },
             ),
           ),

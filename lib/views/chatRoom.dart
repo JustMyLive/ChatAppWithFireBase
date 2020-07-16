@@ -5,6 +5,7 @@ import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
+import 'package:ChatAppWithFireBase/views/signIn.dart';
 import 'package:flutter/material.dart';
 
 import '../services/auth.dart';
@@ -86,7 +87,7 @@ class _ChatRoomState extends State<ChatRoom> {
             onTap: () {
               authMethods.signOut();
               HelperFunctions.clean();
-              replace(context, Authenticate());
+              replace(context, SignIn());
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),

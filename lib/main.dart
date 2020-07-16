@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'helper/helperfunctions.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

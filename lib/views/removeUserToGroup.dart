@@ -2,6 +2,7 @@ import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/widgets/selectUserFromList.dart';
+import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class RemoveUserToGroup extends StatefulWidget {
@@ -16,7 +17,6 @@ class RemoveUserToGroup extends StatefulWidget {
 }
 
 class _RemoveUserToGroupState extends State<RemoveUserToGroup> {
-  DataBaseMethods dataBaseMethods = new DataBaseMethods();
   final ValueNotifier<int> selectCount = ValueNotifier<int>(0);
 
   bool isLoading = false;
@@ -94,30 +94,35 @@ class _RemoveUserToGroupState extends State<RemoveUserToGroup> {
           ),
         ],
       ),
-      body: ListView.builder(
-          itemCount: documentList.length,
-          itemBuilder: (context, index) {
-            return UserItem(
-              documentList[index]["data"],
-              documentList[index]["isSelected"],
-              onTap: (isSelected, userName) {
-                setState(() {
-                  for(int i = 0; i < documentList.length; i++) {
-                    if (userName == documentList[i]["data"]) {
-                      documentList[i]["isSelected"] = isSelected;
-                      int count = 0;
-                      documentList.forEach((element) {
-                        if (element["isSelected"])
-                          count ++;
-                      });
-                      selectCount.value = count;
-                      return;
-                    }
-                  }
-                });
-              },
-            );
-          }),
+      body: Stack(
+        children: <Widget>[
+          ListView.builder(
+              itemCount: documentList.length,
+              itemBuilder: (context, index) {
+                return UserItem(
+                  documentList[index]["data"],
+                  documentList[index]["isSelected"],
+                  onTap: (isSelected, userName) {
+                    setState(() {
+                      for(int i = 0; i < documentList.length; i++) {
+                        if (userName == documentList[i]["data"]) {
+                          documentList[i]["isSelected"] = isSelected;
+                          int count = 0;
+                          documentList.forEach((element) {
+                            if (element["isSelected"])
+                              count ++;
+                          });
+                          selectCount.value = count;
+                          return;
+                        }
+                      }
+                    });
+                  },
+                );
+              }),
+          isLoading ? loadingContainer() : Container(),
+        ],
+      ),
     );
   }
 }
