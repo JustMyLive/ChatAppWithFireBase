@@ -42,6 +42,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 snapshot.data.documents[index].data["chatroomType"],
                 snapshot.data.documents[index].data["chatroomName"],
                 snapshot.data.documents[index].data["users"],
+                snapshot.data.documents[index].data["message"],
               );
             }) : Container();
       },
@@ -70,8 +71,12 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset("assets/images/logo.png",
-          height: 50,),
+        title: Text(
+          'ChatRoom',
+          style: TextStyle(
+            fontStyle: FontStyle.italic
+          ),
+        ),
         actions: <Widget>[
           GestureDetector(
             onTap: () {
@@ -104,9 +109,11 @@ class ChatRoomListItem extends StatelessWidget {
   final String userName;
   final String chatRoomId;
   final String chatType;
+  final String message;
   final List<dynamic> userList;
   String chatRoomName;
-  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList);
+  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType,
+      this.chatRoomName, this.userList, this.message);
 
   @override
   Widget build(BuildContext context) {
