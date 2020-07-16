@@ -5,7 +5,7 @@ import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/addFriends.dart';
 import 'package:ChatAppWithFireBase/views/notifications.dart';
-import 'package:ChatAppWithFireBase/widgets/widget.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 class AddressList extends StatefulWidget {
@@ -64,11 +64,20 @@ class _AddressListState extends State<AddressList> {
         actions: <Widget>[
           Row(
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.notifications_active),
-                onPressed: () {
-                  push(context, Notifications());
-                },
+              Badge(
+                badgeColor: Colors.amberAccent,
+                shape: BadgeShape.circle,
+                borderRadius: 20,
+                position: BadgePosition.topRight(right: 8, top: 10),
+                toAnimate: false,
+                showBadge: true,
+                badgeContent: Container(),
+                child: IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () {
+                    push(context, Notifications());
+                  },
+                ),
               ),
               IconButton(
                 icon: Icon(Icons.person),
