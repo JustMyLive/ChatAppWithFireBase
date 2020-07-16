@@ -48,6 +48,8 @@ class _AddressListState extends State<AddressList> {
     Constants.myName = await HelperFunctions.getUserNameSharePreference();
     Constants.myDocument = await HelperFunctions.getUserDocumentSharePreference();
 
+    setState(() {});
+
     dataBaseMethods.getFriendList(Constants.myDocument).then((val) {
       setState(() {
         friendListStream = val;
@@ -87,7 +89,7 @@ class _AddressListState extends State<AddressList> {
       body: Column(
         children: <Widget>[
           ListTile(
-            title: Text('MY View'),
+            title: Text(Constants.myName),
             leading: CircleAvatar(
               //backgroundImage: NetworkImage('url'),
             ),

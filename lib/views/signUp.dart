@@ -9,9 +9,6 @@ import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'chatRoom.dart';
 
 class SignUp extends StatefulWidget {
-  final Function toggle;
-  SignUp(this.toggle);
-
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -152,15 +149,18 @@ class _SignUpState extends State<SignUp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center ,
                     children: <Widget>[
-                      Text("Already have account? ", style:  medimTextStyle(),),
+                      Text("Already have account? ", style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 17
+                      ),),
                       GestureDetector(
                         onTap: () {
-                          widget.toggle();
+                          Navigator.pop(context);
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: Text("SignIn now", style:  TextStyle(
-                            color: Colors.white,
+                            color: Colors.black54,
                             fontSize: 17,
                             decoration: TextDecoration.underline,
                           ),),

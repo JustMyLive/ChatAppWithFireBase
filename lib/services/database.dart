@@ -62,7 +62,7 @@ class DataBaseMethods {
     bool isSuccessed;
     await Firestore.instance.collection("ChatRoom")
         .document(chatRoomDocumentId)
-        .setData(chatRoomMap, merge: true)
+        .updateData(chatRoomMap)
         .whenComplete(() {
           isSuccessed = true;
         })

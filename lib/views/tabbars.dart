@@ -35,6 +35,7 @@ class _TabBarsState extends State<TabBars> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromRGBO(52, 101, 165, 1),
         child: Icon(Icons.search),
+        elevation: 0,
         onPressed: () {
           push(context, SearchScreen());
         },

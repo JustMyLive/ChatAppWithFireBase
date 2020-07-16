@@ -41,6 +41,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 snapshot.data.documents[index].data["chatroomId"],
                 snapshot.data.documents[index].data["chatroomType"],
                 snapshot.data.documents[index].data["chatroomName"],
+                snapshot.data.documents[index].data["users"],
               );
             }) : Container();
       },
@@ -55,11 +56,9 @@ class _ChatRoomState extends State<ChatRoom> {
 
   getUserInfo() async {
     var aaa = dataBaseMethods.fireBaseTest();
-    
     print("dataBaseMethods.fireBaseTest(): ${aaa}");
 
     Constants.myName = await HelperFunctions.getUserNameSharePreference();
-
     dataBaseMethods.getChatRooms(Constants.myName).then((val) {
       setState(() {
         chatRoomStream = val;
@@ -86,6 +85,7 @@ class _ChatRoomState extends State<ChatRoom> {
           GestureDetector(
             onTap: () {
               authMethods.signOut();
+              HelperFunctions.clean();
               replace(context, Authenticate());
             },
             child: Container(
@@ -104,8 +104,9 @@ class ChatRoomListItem extends StatelessWidget {
   final String userName;
   final String chatRoomId;
   final String chatType;
+  final List<dynamic> userList;
   String chatRoomName;
-  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName);
+  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList);
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +118,7 @@ class ChatRoomListItem extends StatelessWidget {
             chatRoomId,
             chatRoomName,
             chatType: this.chatType == "groupType" ? ChatType.groupChatType : ChatType.privateChatType,
+            userList: this.userList,
           ));
       },
       child: Container(

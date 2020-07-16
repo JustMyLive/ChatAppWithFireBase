@@ -1,8 +1,12 @@
 import 'package:ChatAppWithFireBase/helper/constants.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/views/removeUserToGroup.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'addUserToGroup.dart';
 
 enum ChatType {
   privateChatType,
@@ -13,7 +17,9 @@ class ConversationScreen extends StatefulWidget {
   final ChatType chatType;
   final String chatRoomId;
   final String chatRoomName;
-  ConversationScreen(this.chatRoomId, this.chatRoomName, {this.chatType = ChatType.privateChatType});
+  List<dynamic> userList;
+
+  ConversationScreen(this.chatRoomId, this.chatRoomName, {this.chatType = ChatType.privateChatType, this.userList});
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -74,18 +80,35 @@ class _ConversationScreenState extends State<ConversationScreen> {
           widget.chatType == ChatType.groupChatType ?
           IconButton(icon: Icon(Icons.add_circle_outline),
               onPressed: () {
-
+                push(context, AddUserToGroup(
+                  chatRoomDocumentId: widget.chatRoomId,
+                  alreadyExistsUserList: widget.userList,
+                  userListCallBack: (val) {
+                    widget.userList = val;
+                  },));
+              }) : Container(),
+          widget.chatType == ChatType.groupChatType ?
+          IconButton(icon: Icon(Icons.remove_circle_outline),
+              onPressed: () {
+                push(context, RemoveUserToGroup(
+                  chatRoomDocumentId: widget.chatRoomId,
+                  alreadyExistsUserList: widget.userList,
+                  userListCallBack: (val) {
+                    widget.userList = val;
+                  },));
               }) : Container(),
         ],
       ),
       body: Container(
-        child: Stack(
+        child: Column(
           children: <Widget>[
-            ChatMessageList(),
+            Expanded(
+              child: ChatMessageList(),
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
-                color: Color(0x54FFFFFF),
+                color: Color(0xff145C9E),
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: <Widget>[
@@ -94,7 +117,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           controller: messageController,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                              hintText: "search userName",
+                              hintText: "please print...",
                               hintStyle: TextStyle(
                                   color: Colors.white54
                               ),
@@ -163,18 +186,12 @@ class MessageTitle extends StatelessWidget {
                         topLeft: Radius.circular(23),
                         topRight: Radius.circular(23),
                         bottomRight: Radius.circular(23)),
-                    gradient: LinearGradient(
-                      colors: isSendByMe ? [
-                        const Color(0xff007EF4),
-                        const Color(0xff2A75BC)
-                      ]
-                          : [
-                        const Color(0x1AFFFFFF),
-                        const Color(0x1AFFFFFF)
-                      ],
-                    )
+                    color: isSendByMe ? Colors.blue : Colors.white,
                 ),
-                child: Text(message, style: simpleTextStyle(),),
+                child: Text(message, style: TextStyle(
+                  color: isSendByMe ? Colors.white : Colors.black54,
+                  fontSize: 15
+                ),),
               ),
             ),
           ),

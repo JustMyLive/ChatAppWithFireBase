@@ -6,7 +6,12 @@ class HelperFunctions {
   static const String sharePreferenceUserNameInKey = "USERNAMEKEY";
   static const String sharePreferenceUserEmailInKey = "USEREMAILKEY";
   static const String sharePreferenceUserDocumentInKey = "USERDOCUMENTKEY";
-  
+
+  static Future<void> clean() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.clear();
+  }
+
   // Saving data to SharedPreference
 
   static Future<void> saveUserLoggedInSharePreference(bool isUserLoggedIn) async {

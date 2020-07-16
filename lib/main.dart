@@ -1,5 +1,6 @@
 import 'package:ChatAppWithFireBase/helper/authenticate.dart';
 import 'package:ChatAppWithFireBase/views/chatRoom.dart';
+import 'package:ChatAppWithFireBase/views/signIn.dart';
 import 'package:ChatAppWithFireBase/views/tabbars.dart';
 import 'package:flutter/material.dart';
 
@@ -36,14 +37,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ChatWithFireStore',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xff145C9E),
-//        scaffoldBackgroundColor: Color(0xff1F1F1F),
+        scaffoldBackgroundColor: Color.fromRGBO(235, 235, 235, 1),
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn != null ? userIsLoggedIn ? TabBars() : Authenticate() : Authenticate()
+      home: userIsLoggedIn != null ? userIsLoggedIn ? TabBars() : SignIn() : SignIn()
     );
   }
 }

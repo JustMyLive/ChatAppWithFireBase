@@ -2,6 +2,7 @@ import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/auth.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/views/signUp.dart';
 import 'package:ChatAppWithFireBase/views/tabbars.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,6 @@ import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'chatRoom.dart';
 
 class SignIn extends StatefulWidget {
-  final Function toggle;
-  SignIn(this.toggle);
-
   @override
   _SignInState createState() => _SignInState();
 }
@@ -145,12 +143,12 @@ class _SignInState extends State<SignIn> {
                     // Text("Don't have account? ", style:  medimTextStyle(),),
                     GestureDetector(
                       onTap: () {
-                        widget.toggle();
+                        push(context, SignUp());
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8),
                         child: Text("Register now", style:  TextStyle(
-                            color: Colors.white,
+                            color: Colors.black54,
                             fontSize: 17,
                             decoration: TextDecoration.underline,
                           ),),

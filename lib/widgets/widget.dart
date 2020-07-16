@@ -11,13 +11,13 @@ InputDecoration textFiledInputDecoration(String hintText) {
   return InputDecoration(
       hintText: hintText ?? "",
       hintStyle: TextStyle(
-        color: Colors.white54,
+        color: Colors.black54,
       ),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: BorderSide(color: Colors.black54),
       ),
       enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: BorderSide(color: Colors.black54),
       ),
   );
 }
@@ -38,7 +38,7 @@ TextStyle tabBarUnSelectedTextStyle() {
 
 TextStyle simpleTextStyle() {
   return TextStyle(
-    color: Colors.white,
+    color: Colors.black54,
     fontSize: 16,
   );
 }
