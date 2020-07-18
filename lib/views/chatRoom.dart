@@ -71,8 +71,9 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset("assets/images/logo.png",
-          height: 50,),
+        title: Text('ChatRoom',
+          style: TextStyle(fontStyle: FontStyle.italic),
+        ),
         actions: <Widget>[
           GestureDetector(
             onTap: () {
@@ -107,11 +108,13 @@ class ChatRoomListItem extends StatelessWidget {
   final String chatType;
   final List<dynamic> userList;
   String chatRoomName;
-  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList);
+  String time;
+  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList,);
 
   @override
   Widget build(BuildContext context) {
     chatRoomName = this.chatType == "privateType" ? userName : chatRoomName;
+    time = "10:20";
 
     return GestureDetector(
       onTap: () {
@@ -123,7 +126,7 @@ class ChatRoomListItem extends StatelessWidget {
           ));
       },
       child: Container(
-        color: Colors.black26,
+        color: Colors.white60,
         padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
         child: Row(
           children: <Widget>[
@@ -137,8 +140,22 @@ class ChatRoomListItem extends StatelessWidget {
               ),
               child: Text("${chatRoomName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
             ),
-            SizedBox(width: 8,),
-            Text(chatRoomName, style: medimTextStyle(),),
+            SizedBox(width: 10,),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(chatRoomName, style: medimTextStyle(),),
+                  SizedBox(height: 5,),
+                  Text(
+                    'glakjsdgflkajsdggljggdsahf;klah;sdkhffakjehf;kjhe;fidskjf:lksdh:gh:askgh:lkdsh:g:asdlhg',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Text(time)
           ],
         ),
       ),
