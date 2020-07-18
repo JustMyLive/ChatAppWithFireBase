@@ -44,6 +44,15 @@ class _SearchScreenState extends State<SearchScreen> {
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 7),
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.blueAccent,
+            ),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -104,23 +113,34 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Text(
+            'Search',
+          style: TextStyle(
+            fontStyle: FontStyle.italic
+          ),
+        ),
+      ),
       body: Container(
         child: Column(
           children: <Widget>[
             Container(
-              color: Color(0x54FFFFFF),
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: new BorderRadius.circular(40),
+                color: Colors.black12,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              margin: EdgeInsets.only(left: 15,right: 15,top: 10),
               child: Row(
                 children: <Widget>[
                   Expanded(
                       child: TextField(
                         controller: searchTextEditingController,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: "search userName",
                           hintStyle: TextStyle(
-                            color: Colors.white54
+                            color: Colors.black54
                           ),
                           border: InputBorder.none
                         ),

@@ -45,7 +45,7 @@ TextStyle simpleTextStyle() {
 
 TextStyle medimTextStyle() {
   return TextStyle(
-    color: Colors.white,
+    color: Colors.black,
     fontSize: 17,
   );
 }
