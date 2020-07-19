@@ -71,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text("Message", style: medimTextStyle(),),
+              child: Text("Message", style: TextStyle(color: Colors.white),),
             ),
           ),
         ],
@@ -125,12 +125,8 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                borderRadius: new BorderRadius.circular(40),
-                color: Colors.black12,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              margin: EdgeInsets.only(left: 15,right: 15,top: 10),
+              color: Colors.white12,
+              padding: EdgeInsets.only(top: 10),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -138,11 +134,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         controller: searchTextEditingController,
                         style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person),
                           hintText: "search userName",
                           hintStyle: TextStyle(
                             color: Colors.black54
                           ),
-                          border: InputBorder.none
                         ),
                       )
                   ),
@@ -151,24 +147,19 @@ class _SearchScreenState extends State<SearchScreen> {
                       initiateSearch();
                     },
                     child: Container(
-                      height: 40,
-                      width: 40,
+                      height: 50,
+                      width: 50,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF)
-                          ]
-                        ),
                         borderRadius: BorderRadius.circular(40)
                       ),
-                      padding: EdgeInsets.all(12),
-                      child: Image.asset("assets/images/search_white.png"),
+                      padding: EdgeInsets.all(10),
+                      child: Icon(Icons.search),
                     ),
                   ),
                 ],
               ),
             ),
+            SizedBox(height: 5,),
             searchList()
           ],
         ),
