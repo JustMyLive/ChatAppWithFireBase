@@ -153,6 +153,27 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_easyhub:
+    dependency: "direct main"
+    description:
+      name: flutter_easyhub
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1+0.10"
+  flutter_easyloading:
+    dependency: transitive
+    description:
+      name: flutter_easyloading
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.4"
+  flutter_spinkit:
+    dependency: transitive
+    description:
+      name: flutter_spinkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.2+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter

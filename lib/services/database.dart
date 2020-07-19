@@ -78,13 +78,23 @@ class DataBaseMethods {
     return isSuccessed;
   }
 
-  addConversationMessags(String chatRoomId, messageMap) {
-    Firestore.instance.collection("ChatRoom")
-        .document(chatRoomId)
-        .collection("chatMessages")
-        .add(messageMap).catchError((e) {
-       print(e.toString());
+  addConversationMessags(String chatRoomId, messageMap, roomMessageMap) async {
+
+    bool isSucceed = false;
+    FutureGroup group = FutureGroup();
+
+    group.add(roomMessagethreadTask(chatRoomId, roomMessageMap));
+    group.add(messagethreadTask(chatRoomId, messageMap));
+    group.close();
+
+    await group.future.then((value) {
+      isSucceed = true;
+      print("Group success");
+    }).catchError((error) {
+      print("Group ---- error: $error");
     });
+
+    return isSucceed;
   }
 
   addShareMessags(String chatRoomId, messageMap) {
@@ -231,6 +241,24 @@ Future<void> threadTask(Map<String, dynamic> map) async {
       .setData(map["userMap"], merge: true)
       .whenComplete(() {
   }).catchError((e) {
+    throw "Fake error";
+  });
+}
+
+Future<void> roomMessagethreadTask(String chatRoomId, Map<String, dynamic> map) async {
+  await Firestore.instance.collection("ChatRoom")
+      .document(chatRoomId)
+      .updateData(map)
+      .catchError((e) {
+    throw "Fake error";
+  });
+}
+
+Future<void> messagethreadTask(String chatRoomId, Map<String, dynamic> map) async {
+  await Firestore.instance.collection("ChatRoom")
+      .document(chatRoomId)
+      .collection("chatMessages")
+      .add(map).catchError((e) {
     throw "Fake error";
   });
 }

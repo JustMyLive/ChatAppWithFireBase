@@ -5,6 +5,7 @@ import 'package:ChatAppWithFireBase/views/removeUserToGroup.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyhub/flutter_easy_hub.dart';
 
 import 'addUserToGroup.dart';
 
@@ -49,15 +50,21 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
-  sendMessage() {
+  sendMessage() async {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> messageMap = {
         "message": messageController.text,
         "sendBy": Constants.myName,
         "time": DateTime.now().millisecondsSinceEpoch
       };
-      dataBaseMethods.addConversationMessags(widget.chatRoomId, messageMap);
+      Map<String, dynamic> roomMessageMap = {
+        "lastMessage": messageController.text,
+        "lastMessageTime": DateTime.now().millisecondsSinceEpoch
+      };
       messageController.text = "";
+
+      bool isSucceed = await dataBaseMethods.addConversationMessags(widget.chatRoomId, messageMap, roomMessageMap);
+
     }
   }
 
@@ -170,32 +177,30 @@ class MessageTitle extends StatelessWidget {
       padding: EdgeInsets.only(top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: isSendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
-          isSendByMe ? SizedBox(width: 80,) : userHeaderImage(),
-          Expanded(
+          isSendByMe ? loadingContainerOfConversation(isSendByMe) : userHeaderImage(),
+          Flexible(
             child: Container(
-              alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                decoration: BoxDecoration(
-                    borderRadius: isSendByMe ? BorderRadius.only(
-                        topLeft: Radius.circular(23),
-                        topRight: Radius.circular(23),
-                        bottomLeft: Radius.circular(23)
-                    ) : BorderRadius.only(
-                        topLeft: Radius.circular(23),
-                        topRight: Radius.circular(23),
-                        bottomRight: Radius.circular(23)),
-                    color: isSendByMe ? Colors.blue : Colors.white,
-                ),
-                child: Text(message, style: TextStyle(
-                  color: isSendByMe ? Colors.white : Colors.black54,
-                  fontSize: 15
-                ),),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              decoration: BoxDecoration(
+                  borderRadius: isSendByMe ? BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomLeft: Radius.circular(23)
+                  ) : BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomRight: Radius.circular(23)),
+                  color: isSendByMe ? Colors.blue : Colors.white,
               ),
+              child: Text(message, style: TextStyle(
+                color: isSendByMe ? Colors.white : Colors.black54,
+                fontSize: 15
+              ),),
             ),
           ),
-          isSendByMe ? userHeaderImage() : SizedBox(width: 80,),
+          isSendByMe ? userHeaderImage() : loadingContainerOfConversation(isSendByMe)
         ],
       ),
     );
@@ -212,6 +217,24 @@ class MessageTitle extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
       ),
       child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
+    );
+  }
+
+  Widget loadingContainerOfConversation(bool isSendByMe) {
+    return Container(
+      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 7, bottom: 5, right: 7),
+      width: 80,
+      child: UnconstrainedBox(
+        child: Container(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
+          ),
+        ),
+      ),
     );
   }
 }
