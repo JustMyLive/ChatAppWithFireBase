@@ -1,10 +1,10 @@
-import 'package:ChatAppWithFireBase/helper/authenticate.dart';
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
+import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:ChatAppWithFireBase/views/signIn.dart';
 import 'package:flutter/material.dart';
 
@@ -109,11 +109,13 @@ class ChatRoomListItem extends StatelessWidget {
   final List<dynamic> userList;
   String chatRoomName;
   String time;
+  String newMessage;
   ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList,);
 
   @override
   Widget build(BuildContext context) {
     chatRoomName = this.chatType == "privateType" ? userName : chatRoomName;
+    newMessage = 'chatMessages';
     time = "10:20";
 
     return GestureDetector(
@@ -148,7 +150,7 @@ class ChatRoomListItem extends StatelessWidget {
                   Text(chatRoomName, style: medimTextStyle(),),
                   SizedBox(height: 5,),
                   Text(
-                    'glakjsdgflkajsdggljggdsahf;klah;sdkhffakjehf;kjhe;fidskjf:lksdh:gh:askgh:lkdsh:g:asdlhg',
+                    newMessage,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
