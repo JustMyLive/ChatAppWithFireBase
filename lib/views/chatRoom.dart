@@ -121,6 +121,17 @@ class ChatRoomListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     chatRoomName = this.chatType == "privateType" ? userName : chatRoomName;
+    var timeForlast;
+    if (lastMessageTime == null) {
+      timeForlast = "";
+    } else {
+      if (DateTime.now().day == lastMessageTime.day) {
+        timeForlast = lastMessageTime.hour.toString() + ": " + lastMessageTime.minute.toString();
+      } else {
+        timeForlast = lastMessageTime.month.toString() + "M" + lastMessageTime.day.toString();
+      }
+    }
+
 
     return GestureDetector(
       onTap: () {
@@ -131,39 +142,44 @@ class ChatRoomListItem extends StatelessWidget {
             userList: this.userList,
           ));
       },
-      child: Container(
-        color: Colors.white60,
-        padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 40,
-              width: 40,
-              alignment: Alignment.center ,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Text("${chatRoomName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
-            ),
-            SizedBox(width: 10,),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(chatRoomName, style: medimTextStyle(),),
-                  SizedBox(height: 5,),
-                  Text(
-                    lastMessage ?? "",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: Colors.white60,
+            padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  width: 40,
+                  alignment: Alignment.center ,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(40),
                   ),
-                ],
-              ),
+                  child: Text("${chatRoomName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(chatRoomName, style: medimTextStyle(),),
+                      SizedBox(height: 5,),
+                      Text(
+                        lastMessage ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Text(timeForlast,)
+              ],
             ),
-            Text(lastMessageTime?.toString() ?? "",)
-          ],
-        ),
+          ),
+          Container(height: 1, color: Color.fromRGBO(235, 236, 237, 1),)
+        ],
       ),
     );
   }
