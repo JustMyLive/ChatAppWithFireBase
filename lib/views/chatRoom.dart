@@ -4,7 +4,6 @@ import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
-import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:ChatAppWithFireBase/views/signIn.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +43,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 snapshot.data.documents[index].data["chatroomName"],
                 snapshot.data.documents[index].data["users"],
                 snapshot.data.documents[index].data["lastMessage"],
-                DateTime.fromMillisecondsSinceEpoch(snapshot.data.documents[index].data["lastMessageTime"]),
+                httpTimeToDateTime(snapshot.data.documents[index].data["lastMessageTime"])
               );
             }) : Container();
       },
@@ -162,7 +161,7 @@ class ChatRoomListItem extends StatelessWidget {
                 ],
               ),
             ),
-            Text(lastMessageTime.toString())
+            Text(lastMessageTime?.toString() ?? "",)
           ],
         ),
       ),

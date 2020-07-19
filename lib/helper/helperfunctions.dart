@@ -57,3 +57,7 @@ class HelperFunctions {
   }
 
 }
+
+DateTime httpTimeToDateTime(int time) {
+  return time == null ? null : DateTime.fromMillisecondsSinceEpoch(time);
+}
