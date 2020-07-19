@@ -36,7 +36,7 @@ class _AddUserToGroupState extends State<AddUserToGroup> {
 
     Constants.myName = await HelperFunctions.getUserNameSharePreference();
 
-    dataBaseMethods.getUsers(Constants.myName).then((val) {
+    dataBaseMethods.getUsers().then((val) {
       setState(() {
         userStream = val;
       });

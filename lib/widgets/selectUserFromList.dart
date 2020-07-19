@@ -123,15 +123,12 @@ class _SelectUserFromListState extends State<SelectUserFromList> {
   }
 }
 
-
 class UserItem extends StatelessWidget {
   final String userName;
   final Function(bool, String) onTap;
   final bool isSelected;
 
   UserItem(this.userName, this.isSelected, {this.onTap});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +167,6 @@ class UserItem extends StatelessWidget {
     );
   }
 }
-
 
 class AlreadyAddUserItem extends StatelessWidget {
   final String userName;
