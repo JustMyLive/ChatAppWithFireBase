@@ -43,7 +43,8 @@ class _ChatRoomState extends State<ChatRoom> {
                 snapshot.data.documents[index].data["chatroomType"],
                 snapshot.data.documents[index].data["chatroomName"],
                 snapshot.data.documents[index].data["users"],
-                snapshot.data.documents[index].data["message"],
+                snapshot.data.documents[index].data["lastMessage"],
+                DateTime.fromMillisecondsSinceEpoch(snapshot.data.documents[index].data["lastMessageTime"]),
               );
             }) : Container();
       },
@@ -110,20 +111,17 @@ class ChatRoomListItem extends StatelessWidget {
   final String userName;
   final String chatRoomId;
   final String chatType;
-  final String message;
+  final String lastMessage;
+  final DateTime lastMessageTime;
   final List<dynamic> userList;
   String chatRoomName;
-  String time;
-  String newMessage;
-//  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList,);
+
   ChatRoomListItem(this.userName, this.chatRoomId, this.chatType,
-      this.chatRoomName, this.userList, this.message);
+      this.chatRoomName, this.userList, this.lastMessage, this.lastMessageTime);
 
   @override
   Widget build(BuildContext context) {
     chatRoomName = this.chatType == "privateType" ? userName : chatRoomName;
-    newMessage = 'chatMessages';
-    time = "10:20";
 
     return GestureDetector(
       onTap: () {
@@ -157,14 +155,14 @@ class ChatRoomListItem extends StatelessWidget {
                   Text(chatRoomName, style: medimTextStyle(),),
                   SizedBox(height: 5,),
                   Text(
-                    newMessage,
+                    lastMessage ?? "",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ],
               ),
             ),
-            Text(time)
+            Text(lastMessageTime.toString())
           ],
         ),
       ),

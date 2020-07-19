@@ -215,3 +215,11 @@ class MessageTitle extends StatelessWidget {
     );
   }
 }
+
+class MessageShareItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
