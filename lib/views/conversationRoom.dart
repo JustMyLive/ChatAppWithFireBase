@@ -1,8 +1,10 @@
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
+import 'package:ChatAppWithFireBase/views/programDetail.dart';
 import 'package:ChatAppWithFireBase/views/removeUserToGroup.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyhub/flutter_easy_hub.dart';
@@ -40,6 +42,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
           return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
+                if (snapshot.data.documents[index].data["messageType"] == "program")
+                  return MessageShareItem(
+                    snapshot.data.documents[index].data["messageText"],
+                    snapshot.data.documents[index].data["sendBy"] == Constants.myName,
+                    snapshot.data.documents[index].data["sendBy"],
+                    snapshot.data.documents[index].data["photoUrl"],
+                  );
+                else
                 return MessageTitle(
                   snapshot.data.documents[index].data["message"],
                   snapshot.data.documents[index].data["sendBy"] == Constants.myName,
@@ -178,7 +188,7 @@ class MessageTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: isSendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
-          isSendByMe ? loadingContainerOfConversation(isSendByMe) : userHeaderImage(),
+          isSendByMe ? loadingContainerOfConversation(isSendByMe) : userHeaderImage(userName),
           Flexible(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -199,49 +209,77 @@ class MessageTitle extends StatelessWidget {
               ),),
             ),
           ),
-          isSendByMe ? userHeaderImage() : loadingContainerOfConversation(isSendByMe)
+          isSendByMe ? userHeaderImage(userName) : loadingContainerOfConversation(isSendByMe)
         ],
       ),
     );
   }
 
-  Widget userHeaderImage() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 7),
-      height: 40,
-      width: 40,
-      alignment: Alignment.center ,
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(40),
-      ),
-      child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
-    );
-  }
 
-  Widget loadingContainerOfConversation(bool isSendByMe) {
-    return Container(
-      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
-      padding: EdgeInsets.only(left: 7, bottom: 5, right: 7),
-      width: 80,
-//      child: UnconstrainedBox(
-//        child: Container(
-//          height: 20,
-//          width: 20,
-//          child: CircularProgressIndicator(
-//            strokeWidth: 2,
-//            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
-//          ),
-//        ),
-//      ),
-    );
-  }
 }
 
 class MessageShareItem extends StatelessWidget {
+  final String message;
+  final bool isSendByMe;
+  final String userName;
+  final String photoUrl;
+  MessageShareItem(this.message, this.isSendByMe, this.userName, this.photoUrl);
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      height: 130,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: isSendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: <Widget>[
+          isSendByMe ? loadingContainerOfConversation(isSendByMe) : userHeaderImage(userName),
+          Flexible(
+            child: ClipRRect(
+              borderRadius: isSendByMe ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23)
+              ) : BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23)),
+              child: GestureDetector(
+                onTap: () {
+                  push(context, ProgramDetail());
+                },
+                child: Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      Container(width: 120, height: 120,
+                        child: CachedNetworkImage(
+                          imageUrl: photoUrl,
+                          fit: BoxFit.fill,
+                          placeholder: (context, url) => imageLoading(),
+                          errorWidget: (context, url, error) => new Icon(Icons.error),
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                            child: Text(message ?? "",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold
+                              ),),
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          isSendByMe ? userHeaderImage(userName) : loadingContainerOfConversation(isSendByMe)
+        ],
+      ),
+    );
   }
 }
 

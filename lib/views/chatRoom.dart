@@ -126,9 +126,10 @@ class ChatRoomListItem extends StatelessWidget {
       timeForlast = "";
     } else {
       if (DateTime.now().day == lastMessageTime.day) {
-        timeForlast = lastMessageTime.hour.toString() + ": " + lastMessageTime.minute.toString();
+        timeForlast = lastMessageTime.hour.toString() + ": " +
+            (lastMessageTime.minute < 10 ? "0" : "") + lastMessageTime.minute.toString();
       } else {
-        timeForlast = lastMessageTime.month.toString() + "M" + lastMessageTime.day.toString();
+        timeForlast = lastMessageTime.month.toString() + "月" + lastMessageTime.day.toString();
       }
     }
 

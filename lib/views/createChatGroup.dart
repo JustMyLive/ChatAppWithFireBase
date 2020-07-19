@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
@@ -73,7 +75,8 @@ class _CreateChatGroupState extends State<CreateChatGroup> {
                   this.isLoading = true;
                 });
 
-                var chatRoomId = await DataBaseMethods().createGroupChatRoom(users, "GroupNameForInit");
+                var randomNumber = Random().nextInt(10);
+                var chatRoomId = await DataBaseMethods().createGroupChatRoom(users, "GroupNameForInit--$randomNumber");
                 if (chatRoomId == null) {
                   print("Create Room failed, Please check up");
                   return;

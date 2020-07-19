@@ -84,3 +84,48 @@ Widget myCustomBottomAppTab(int index, int selectedIndex, String text, String ic
     ],
   );
 }
+
+Widget loadingContainerOfConversation(bool isSendByMe) {
+  return Container(
+    alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+    padding: EdgeInsets.only(left: 7, bottom: 5, right: 7),
+    width: 80,
+//      child: UnconstrainedBox(
+//        child: Container(
+//          height: 20,
+//          width: 20,
+//          child: CircularProgressIndicator(
+//            strokeWidth: 2,
+//            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
+//          ),
+//        ),
+//      ),
+  );
+}
+
+Widget userHeaderImage(String userName) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 7),
+    height: 40,
+    width: 40,
+    alignment: Alignment.center ,
+    decoration: BoxDecoration(
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(40),
+    ),
+    child: Text("${userName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
+  );
+}
+
+Widget imageLoading() {
+  return new Center(
+    child: new SizedBox(
+      width: 24.0,
+      height: 24.0,
+      child: new CircularProgressIndicator(
+        strokeWidth: 2.0,
+        backgroundColor: Colors.transparent,
+      ),
+    ),
+  );
+}

@@ -118,6 +118,7 @@ class DataBaseMethods {
     return await Firestore.instance
         .collection("ChatRoom")
         .where("users", arrayContains: userName)
+        .orderBy("lastMessageTime", descending: true)
         .snapshots();
   }
 
@@ -127,9 +128,10 @@ class DataBaseMethods {
         .snapshots();
   }
 
-  getGroups() async {
+  getGroups(String userName) async {
     return await Firestore.instance
         .collection("ChatRoom")
+        .where("users", arrayContains: userName)
         .where("chatroomType", isEqualTo: "groupType")
         .snapshots();
   }
@@ -255,7 +257,7 @@ Future<void> threadTask(Map<String, dynamic> map) async {
 Future<void> roomMessagethreadTask(String chatRoomId, Map<String, dynamic> map) async {
   await Firestore.instance.collection("ChatRoom")
       .document(chatRoomId)
-      .updateData(map)
+      .setData(map, merge: true)
       .catchError((e) {
     throw "Fake error";
   });

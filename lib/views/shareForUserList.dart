@@ -1,7 +1,9 @@
 import 'package:ChatAppWithFireBase/helper/constants.dart';
+import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/widgets/widget.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,7 +39,7 @@ class _ShareForUserListState extends State<ShareForUserList> {
       });
     });
 
-    dataBaseMethods.getGroups().then((val) {
+    dataBaseMethods.getGroups(Constants.myName).then((val) {
       setState(() {
         groupListStream = val;
       });
@@ -56,9 +58,24 @@ class _ShareForUserListState extends State<ShareForUserList> {
           stream: Rx.combineLatest2(userListStream, groupListStream, (userList, groupList)
             => ShareList(userList, groupList)),
           builder: (context, snapshot) {
-            var documentList = snapshot.data?.documents;
+            List documentList = [];
+            snapshot.data.groupList?.documents?.forEach((val) {
+              documentList.add({
+                "name": val.data["chatroomName"],
+                "documentId": val.data["chatroomId"],
+                "type": "groupType"
+              });
+            });
+            snapshot.data.userList?.documents?.forEach((val) {
+              documentList.add({
+                "name": val.data["name"],
+                "documentId": getChatRoomId(val.data["name"], Constants.myName),
+                "type": "privateType",
+                "users": [val.data["name"], Constants.myName]
+              });
+            });
             documentList?.removeWhere((element) {
-              if (element.data["name"] == Constants.myName)
+              if (element["name"] == Constants.myName)
                 return true;
               else
                 return false;
@@ -66,8 +83,8 @@ class _ShareForUserListState extends State<ShareForUserList> {
             return ListView.builder(
               itemCount: documentList.length,
               itemBuilder: (context, index) {
-                return UserItem(documentList[index].data["name"],
-                  onTap: (val) {
+                return UserItem(documentList[index]["name"],
+                  onTap: (val)  {
                     AwesomeDialog(
                       context: context,
                       dialogType: DialogType.INFO,
@@ -75,8 +92,39 @@ class _ShareForUserListState extends State<ShareForUserList> {
                       desc: 'You will Share message to $val',
                       title: 'Share',
                       btnCancelOnPress: () {},
-                      btnOkOnPress: () {
-                        //dataBaseMethods.addConversationMessags(chatRoomId, messageMap, roomMessageMap)
+                      btnOkOnPress: () async {
+                        Map<String, dynamic> messageMap = {
+                          "programId": widget.programId,
+                          "message": "Share Message",
+                          "messageText": widget.programTitle,
+                          "messageType": "program",
+                          "photoUrl": widget.programImage,
+                          "sendBy": Constants.myName,
+                          "time": DateTime.now().millisecondsSinceEpoch
+                        };
+                        Map<String, dynamic> roomMessageMap = {
+                          "lastMessage": "Share Message",
+                          "lastMessageTime": DateTime.now().millisecondsSinceEpoch,
+                        };
+                        if (documentList[index]["type"] == "privateType") {
+                          roomMessageMap["chatroomId"] = documentList[index]["documentId"];
+                          roomMessageMap["users"] = documentList[index]["users"];
+                          roomMessageMap["chatroomType"] = documentList[index]["type"];
+                        }
+                        setState(() {
+                          isLoading = true;
+                        });
+                        bool isSucceed = await dataBaseMethods.addConversationMessags(
+                            documentList[index]["documentId"],
+                            messageMap,
+                            roomMessageMap);
+                        if (isSucceed) {
+                          Navigator.pop(context);
+                        } else {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
                       },
                     )..show();
                   },);
@@ -136,8 +184,8 @@ class UserItem extends StatelessWidget {
 }
 
 class ShareList {
-  final List<dynamic> userList;
-  final List<dynamic> groupList;
+  final QuerySnapshot userList;
+  final QuerySnapshot groupList;
 
   ShareList(this.userList, this.groupList);
 }
