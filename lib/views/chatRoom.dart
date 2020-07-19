@@ -1,10 +1,10 @@
-import 'package:ChatAppWithFireBase/helper/authenticate.dart';
 import 'package:ChatAppWithFireBase/helper/constants.dart';
 import 'package:ChatAppWithFireBase/helper/helperfunctions.dart';
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/services/database.dart';
 import 'package:ChatAppWithFireBase/views/createChatGroup.dart';
 import 'package:ChatAppWithFireBase/views/conversationRoom.dart';
+import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:ChatAppWithFireBase/views/signIn.dart';
 import 'package:flutter/material.dart';
 
@@ -113,12 +113,17 @@ class ChatRoomListItem extends StatelessWidget {
   final String message;
   final List<dynamic> userList;
   String chatRoomName;
+  String time;
+  String newMessage;
+//  ChatRoomListItem(this.userName, this.chatRoomId, this.chatType, this.chatRoomName, this.userList,);
   ChatRoomListItem(this.userName, this.chatRoomId, this.chatType,
       this.chatRoomName, this.userList, this.message);
 
   @override
   Widget build(BuildContext context) {
     chatRoomName = this.chatType == "privateType" ? userName : chatRoomName;
+    newMessage = 'chatMessages';
+    time = "10:20";
 
     return GestureDetector(
       onTap: () {
@@ -130,7 +135,7 @@ class ChatRoomListItem extends StatelessWidget {
           ));
       },
       child: Container(
-        color: Colors.black26,
+        color: Colors.white60,
         padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
         child: Row(
           children: <Widget>[
@@ -144,8 +149,22 @@ class ChatRoomListItem extends StatelessWidget {
               ),
               child: Text("${chatRoomName.substring(0,1).toUpperCase()}", style: medimTextStyle(),),
             ),
-            SizedBox(width: 8,),
-            Text(chatRoomName, style: medimTextStyle(),),
+            SizedBox(width: 10,),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(chatRoomName, style: medimTextStyle(),),
+                  SizedBox(height: 5,),
+                  Text(
+                    newMessage,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Text(time)
           ],
         ),
       ),

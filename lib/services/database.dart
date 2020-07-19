@@ -87,14 +87,14 @@ class DataBaseMethods {
     });
   }
 
-//  addShareMessags(String chatRoomId, messageMap) {
-//    Firestore.instance.collection("ChatRoom")
-//        .document(chatRoomId)
-//        .collection("chatMessages")
-//        .add(messageMap).catchError((e) {
-//      print(e.toString());
-//    });
-//  }
+  addShareMessags(String chatRoomId, messageMap) {
+    Firestore.instance.collection("ChatRoom")
+        .document(chatRoomId)
+        .collection("chatMessages")
+        .add(messageMap).catchError((e) {
+      print(e.toString());
+    });
+  }
 
   getConversationMessags(String chatRoomId) async {
     return await Firestore.instance.collection("ChatRoom")
