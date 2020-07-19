@@ -121,9 +121,16 @@ class DataBaseMethods {
         .snapshots();
   }
 
-  getUsers(String userName) async {
+  getUsers() async {
     return await Firestore.instance
         .collection("users")
+        .snapshots();
+  }
+
+  getGroups() async {
+    return await Firestore.instance
+        .collection("ChatRoom")
+        .where("chatroomType", isEqualTo: "groupType")
         .snapshots();
   }
 
