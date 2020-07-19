@@ -10,21 +10,36 @@ class MyCustomBottomAppBarItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        GestureDetector(
-            onTap: () {
-              onTapItem(0);
-            },
-            child: myCustomBottomAppTab(0, selectedIndex, "ChatRoom", "chat")
+        Expanded(
+          flex: 1,
+          child: GestureDetector(
+              onTap: () {
+                onTapItem(0);
+              },
+              child: myCustomBottomAppTab(0, selectedIndex, "ChatRoom", "chat")
+          ),
         ),
-        GestureDetector(
-            onTap: () {
-              onTapItem(1);
-            },
-            child: myCustomBottomAppTab(1, selectedIndex, "Friends", "person")
-        ),
+        Expanded(
+          flex: 1,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  onTapItem(1);
+                },
+                child: myCustomBottomAppTab(1, selectedIndex, "Friends", "person")
+            ),
+            GestureDetector(
+                onTap: () {
+                  onTapItem(2);
+                },
+                child: myCustomBottomAppTab(2, selectedIndex, "Program", "person")
+            ),
+          ],),
+        )
       ],
     );
   }

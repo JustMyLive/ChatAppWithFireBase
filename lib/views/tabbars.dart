@@ -1,5 +1,6 @@
 import 'package:ChatAppWithFireBase/helper/util.dart';
 import 'package:ChatAppWithFireBase/views/addressList.dart';
+import 'package:ChatAppWithFireBase/views/program.dart';
 import 'package:ChatAppWithFireBase/views/search.dart';
 import 'package:ChatAppWithFireBase/widgets/myCustomBottomAppBarItems.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _TabBarsState extends State<TabBars> {
         children: <Widget>[
           ChatRoom(),
           AddressList(),
+          Program(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
