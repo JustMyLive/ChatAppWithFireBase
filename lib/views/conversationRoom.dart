@@ -130,15 +130,23 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                        child: TextField(
-                          controller: messageController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                              hintText: "please print...",
-                              hintStyle: TextStyle(
-                                  color: Colors.white54
-                              ),
-                              border: InputBorder.none
+                        child: Container(
+                          constraints: BoxConstraints(
+                              maxHeight: 194.0,
+//                              minHeight: 48.0,
+                          ),
+                          child: TextField(
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            controller: messageController,
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            decoration: InputDecoration(
+                                hintText: "please print...",
+                                hintStyle: TextStyle(
+                                    color: Colors.white54
+                                ),
+                                border: InputBorder.none
+                            ),
                           ),
                         )
                     ),

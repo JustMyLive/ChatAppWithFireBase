@@ -33,6 +33,7 @@ dependencies:
   awesome_dialog: ^1.1.3
   rxdart: ^0.24.1
   cached_network_image: 2.0.0
+  characters: ^1.0.0
 
 dev_dependencies:
   
